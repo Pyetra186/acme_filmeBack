@@ -17,28 +17,41 @@
  * 
  *   Para iniciar o prisma no projeto devemos:
  *      npx prisma init
+ * 
+ *   ----Adicionar as pastas do prisma, CASO TENHA MUDADO DE COMPUTADOR
+ *      npm i
+ * 
+ *   ----Reconecta a conexão do banco com o prisma, CASO TENHA MUDADO DE COMPUTADOR
+ *     npx prisma generate
+ * 
+ *   -POSTMAN
+ *   adicionar http://localhost:8080/ sempre antes das requicições exem:http://localhost:8080/v2/acmefilmes/filme/2
  ***/
 
 
 
     const express = require('express')
     const cors = require ('cors')
+    const bodyParser = require('body-parser')
     const {request} = require('http')
     const {access} = require('fs')
   
-
+   //OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIIIIIIIIIIIIIIIIIIIII PIETRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     const app = express()
 
     app.use((request, response, next) => {
     
     response.header('Access-Control-Allow-Origin', "*") 
-    response.header('Access-Control-Allow-Methods', 'GET')
-
+    response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
     app.use(cors())
     next()
 })
 
+//import dos arquivos da controller do projeto
 const controllerFilmes = require('./controller/controller_filme.js')
+
+//criando um objeto para controlar a chegada dos dados da requisição em formato JSON 
+const bodyParserJSON = bodyParser.json();
 
 //EndPoints: Versão 1.0 que retorna os dados de um arquivo de filmes
 //Período de utilização 01/2024 até 02/2024
@@ -94,6 +107,19 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response){
 
     response.status(dadosFilme.status_code);
     response.json(dadosFilme);
+
+})
+
+app.post('v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request, response){
+
+    //recebe todos oss dados encaminhados na requicisão body
+    let dadosBody = request.body;
+
+    //encaminha os dados para o controller enviar para o DAO
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody);
+    
+    response.status(resultDadosNovoFilme.status_code)
+    response.json(resultDadosNovoFilme)
 
 })
 
