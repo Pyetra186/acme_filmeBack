@@ -70,8 +70,14 @@ const FilmeEspecifico = (id) => {
     }
     
 
-
-    
-
+   
     //console.log(listarFilmes())
     //console.log(FilmeEspecifico(3))
+
+
+    module.exports = {
+        listarFilmes,
+        FilmeEspecifico,
+        
+
+    }
