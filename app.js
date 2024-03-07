@@ -36,7 +36,7 @@
     const {request} = require('http')
     const {access} = require('fs')
   
-   //OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIIIIIIIIIIIIIIIIIIIII PIETRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  
     const app = express()
 
     app.use((request, response, next) => {
@@ -110,7 +110,7 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response){
 
 })
 
-app.post('v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request, response){
+app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request, response){
 
     //recebe todos oss dados encaminhados na requicisão body
     let dadosBody = request.body;
