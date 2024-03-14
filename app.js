@@ -112,11 +112,14 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response){
 
 app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request, response){
 
+    //recebe o content-type da requicição
+    let contentType = request.headers['content-type'];
+
     //recebe todos oss dados encaminhados na requicisão body
     let dadosBody = request.body;
 
     //encaminha os dados para o controller enviar para o DAO
-    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody);
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType);
     
     response.status(resultDadosNovoFilme.status_code)
     response.json(resultDadosNovoFilme)
@@ -124,6 +127,6 @@ app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request,
 })
 
 //Executa a API e faz ela ficar aguardando requisições
-app.listen(8080, function(){
+app.listen(3030, function(){
     console.log('API funcionando e aguardando requisições');
 })
