@@ -90,14 +90,31 @@ const setInserirNovoFilme = async function(dadosFilme, contentType){
     
 
 // Função para atualizar um filme
-const setAtializarFilme = async function(){
+const setAtualizarFilme = async function(){
 
 }
 
 //Função para deletar um filme
-const setExcluirFilme =  async function(){
+const setExcluirFilme =  async function(id){
+    let idFilme = id;
 
-}
+
+    if(idFilme == '' || idFilme == undefined || isNaN(idFilme) || idFilme == null) {
+        return message.ERROR_INVALID_ID;//400
+    }else{
+        let dadosFilme = await filmesDAO.deleteFilme(idFilme);
+        
+        if(dadosFilme){
+            return message.SUCCESS_DELETE//200
+
+
+            }else{
+                return message.ERROR_NOT_FOUD;//404
+
+            }
+
+        }
+    }
 
 //Função para listar filmes
 const getListarFilmes = async function(){
@@ -175,7 +192,7 @@ const getBuscarNomeFilme = async function(nome){
 
 module.exports = {
     setInserirNovoFilme,
-    setAtializarFilme,
+    setAtualizarFilme,
     setExcluirFilme,
     getBuscarFilme,
     getListarFilmes,

@@ -14,7 +14,8 @@ const ERROR_INTERNAL_SERVER_DB = {status: false, status_code: 500, message: 'Nã
 const ERROR_INTERNAL_SERVER    = {status: false, status_code: 500, message: 'Não foi possivel processar a requisição, devido a um problema na camada de negocio/ controle da aplicação. contate o administrador da API!'}
 
 /*****************************MENSAGENS DE SUCESSO*************************************** */
-const SUCCESS_CREATED_ITEM       =     {status: true, status_code: 201, message: 'Item criado com sucesso!!'}
+const SUCCESS_CREATED_ITEM =     {status: true, status_code: 201, message: 'Item criado com sucesso!!'}
+const SUCCESS_DELETE       =     {status: true, status_code: 200, message: 'Item deletado com sucesso!!'}
 
 module.exports = {
     ERROR_INVALID_ID,
@@ -23,5 +24,6 @@ module.exports = {
     ERROR_REQUIRED_FIELDS,
     SUCCESS_CREATED_ITEM,
     ERROR_CONTENT_TYPE,
-    ERROR_INTERNAL_SERVER
+    ERROR_INTERNAL_SERVER,
+    SUCCESS_DELETE
 }

@@ -25,7 +25,7 @@
  *     npx prisma generate
  * 
  *   -POSTMAN
- *   adicionar http://localhost:8080/ sempre antes das requicições exem:http://localhost:8080/v2/acmefilmes/filme/2
+ *   adicionar http://localhost:8080/ ou http://localhost:3030/ (caso o 8080 não funcione) sempre antes das requicições exem:http://localhost:8080/v2/acmefilmes/filme/2
  ***/
 
 
@@ -108,6 +108,15 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response){
     response.status(dadosFilme.status_code);
     response.json(dadosFilme);
 
+})
+
+app.delete('/v2/acmefilmes/filme/:id', cors(), async function (request, response,  next){
+
+     let idFilme = request.params.id;
+
+     let dadosFilme = await controllerFilmes.setExcluirFilme(idFilme);
+
+     response.json(dadosFilme);
 })
 
 app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request, response){
