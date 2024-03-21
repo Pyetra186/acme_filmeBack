@@ -70,9 +70,9 @@ const insertFilme = async function(dadosFilme){
 
 
         
-// $executeRawUnsafe() -  serve para executar scripts sem retorno de dados
+// $executeRawUnsafe() -  serve para EXECUTAR scripts sem retorno de dados
 //(insert, update e dele) 
-// $queryRawUnsafe() -   serve para executar scripts com retorno de dados (select) 
+// $queryRawUnsafe() -   serve para executar(PESQUISAR) scripts com retorno de dados (select) 
 
 let result = await prisma.$executeRawUnsafe(sql);
 
@@ -100,23 +100,74 @@ const InsertById = async function(){
     }
 }
 // Função para atualizar um filme no Banco de Dados
-const updateFilme = async function(){
+const updateFilme = async function(dadosFilme, id){
 
-}
+    
+        let sql
+    
+                try{
+             
+                 if( dadosFilme.data_relancamento != '' &&
+                     dadosFilme.data_relancamento != null &&
+                     dadosFilme.data_relancamento!= undefined
+                     ){
+                 
+                         sql = `update tbl_filme set
+                             nome = replace("${dadosFilme.nome}","'","#"),
+                             sinopse = replace("${dadosFilme.sinopse}", "'", "#"),
+                             duracao = '${dadosFilme.duracao}', 
+                             data_lancamento = '${dadosFilme.data_lancamento}', 
+                             data_relancamento = '${dadosFilme.data_relancamento}', 
+                             foto_capa = '${dadosFilme.foto_capa}', 
+                             valor_unitario = '${dadosFilme.valor_unitario}'
+                             where tbl_filme.id = ${id}
+                             `;
+                             console.log(sql)
+                     }else{
+                         sql = `update tbl_filme set
+                            nome = replace("${dadosFilme.nome}","'","#"),
+                             sinopse =  replace("${dadosFilme.sinopse}", "'", "#"),
+                             duracao = '${dadosFilme.duracao}', 
+                             data_lancamento = '${dadosFilme.data_lancamento}', 
+                             data_relancamento = null, 
+                             foto_capa = '${dadosFilme.foto_capa}', 
+                             valor_unitario = '${dadosFilme.valor_unitario}'
+                             where tbl_filme.id = ${id}
+                             `;
+                     }
+                     
+             
+                     let rsFilme = await prisma.$executeRawUnsafe(sql);
+             
+                     if(rsFilme)
+                 return true;
+              else
+                 return false;
+             
+             }catch  (error) {
+                 
+                return false;
+                 }
+             
+                }
+
+
+
+
 
 // Funçao para excluir um filme no Banco de Dados
-const deleteFilme = async function(id){
+async function deleteFilme(id) {
 
-    try{
+    try {
         let sql = `delete from tbl_filme where id = ${id}`;
-    
+
         let rsFilme = await prisma.$queryRawUnsafe(sql);
-    
+
         return rsFilme;
 
-    }catch(error){
+    } catch (error) {
 
-        return false
+        return false;
 
     }
 

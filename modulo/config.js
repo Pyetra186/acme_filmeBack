@@ -15,6 +15,7 @@ const ERROR_INTERNAL_SERVER    = {status: false, status_code: 500, message: 'Nã
 
 /*****************************MENSAGENS DE SUCESSO*************************************** */
 const SUCCESS_CREATED_ITEM =     {status: true, status_code: 201, message: 'Item criado com sucesso!!'}
+const SUCCESS_UPDATE       =     {status: true, status_code: 201, message: 'Update feito com sucesso!!'}
 const SUCCESS_DELETE       =     {status: true, status_code: 200, message: 'Item deletado com sucesso!!'}
 
 module.exports = {
@@ -25,5 +26,6 @@ module.exports = {
     SUCCESS_CREATED_ITEM,
     ERROR_CONTENT_TYPE,
     ERROR_INTERNAL_SERVER,
-    SUCCESS_DELETE
+    SUCCESS_DELETE,
+    SUCCESS_UPDATE
 }

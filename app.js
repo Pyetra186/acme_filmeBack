@@ -135,7 +135,18 @@ app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request,
 
 })
 
+app.put('/v2/acmefilmes/filme/:id', cors(), bodyParserJson, async function(request,response){
+    let contentType = request.headers['content-type']
+    let idFilme = request.params.id
+
+    let dadosBody = request.body
+    let resultadoNovosDadosFilme = await controllerFilmes.setAtualizarFilme(dadosBody,contentType, idFilme)
+
+    response.status(resultadoNovosDadosFilme.status_code)
+    response.json(resultadoNovosDadosFilme)
+})
+
 //Executa a API e faz ela ficar aguardando requisições
-app.listen(3030, function(){
+app.listen(8080, function(){
     console.log('API funcionando e aguardando requisições');
 })
