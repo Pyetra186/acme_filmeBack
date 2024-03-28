@@ -135,7 +135,7 @@ app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request,
 
 })
 
-app.put('/v2/acmefilmes/filme/:id', cors(), bodyParserJson, async function(request,response){
+app.put('/v2/acmefilmes/filme/:id', cors(), bodyParserJSON, async function(request,response){
     let contentType = request.headers['content-type']
     let idFilme = request.params.id
 
