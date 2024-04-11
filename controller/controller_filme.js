@@ -26,6 +26,7 @@ const setInserirNovoFilme = async function(dadosFilme, contentType){
             dadosFilme.duracao == ''                   || dadosFilme.duracao == undefined           || dadosFilme.duracao == null         || dadosFilme.duracao.length > 8             ||
             dadosFilme.data_lancamento == ''           || dadosFilme.data_lancamento == undefined   || dadosFilme.data_lancamento == null || dadosFilme.data_lancamento.length != 10   ||
             dadosFilme.foto_capa == ''                 || dadosFilme.foto_capa == undefined         || dadosFilme.foto_capa == null       || dadosFilme.foto_capa.length > 1000        ||
+            dadosFilme.classificacao == ''             || dadosFilme.classificacao == undefined     || dadosFilme.classificacao == null   ||  
             dadosFilme.valor_unitario.length > 6         
         ){
     
@@ -109,12 +110,13 @@ const setAtualizarFilme = async function (dadosFilme, contentType, id) {
 
                     let updateFilmeJson = {}
 
-                 
-                    if (dadosFilme.nome == '' || dadosFilme.nome == undefined || dadosFilme.nome == null || dadosFilme.nome.length > 80 ||
-                        dadosFilme.sinopse == '' || dadosFilme.sinopse == undefined || dadosFilme.sinopse == null || dadosFilme.sinopse.length > 65000 ||
-                        dadosFilme.duracao == '' || dadosFilme.duracao == undefined || dadosFilme.duracao == null || dadosFilme.duracao.length > 8 ||
+                  
+                    if (dadosFilme.nome == ''            || dadosFilme.nome == undefined            || dadosFilme.nome == null            || dadosFilme.nome.length > 80             ||
+                        dadosFilme.sinopse == ''         || dadosFilme.sinopse == undefined         || dadosFilme.sinopse == null         || dadosFilme.sinopse.length > 65000       ||
+                        dadosFilme.duracao == ''         || dadosFilme.duracao == undefined         || dadosFilme.duracao == null         || dadosFilme.duracao.length > 8           ||
                         dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento == null || dadosFilme.data_lancamento.length != 10 ||
-                        dadosFilme.foto_capa == '' || dadosFilme.foto_capa == undefined || dadosFilme.foto_capa == null || dadosFilme.foto_capa.length > 200 ||
+                        dadosFilme.foto_capa == ''       || dadosFilme.foto_capa == undefined       || dadosFilme.foto_capa == null       || dadosFilme.foto_capa.length > 200       ||
+                        dadosFilme.classificacao == ''   || dadosFilme.classificacao == undefined   || dadosFilme.classificacao == null   ||
                         dadosFilme.valor_unitario.length > 6
 
                     ) {

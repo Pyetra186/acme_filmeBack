@@ -16,7 +16,8 @@ const listarFilmes = () => {
             dataLancamento: filme.data_lancamento,
             dataRelancamento: filme.data_relancamento,
             fotoCapa: filme.foto_capa,
-            valor: filme.valor_unitario
+            valor: filme.valor_unitario,
+            clasificacao : filme.clasificacao
         }
         
         status = true
@@ -49,7 +50,8 @@ const FilmeEspecifico = (id) => {
                 dataLancamento: filme.data_lancamento,
                 dataRelancamento: filme.data_relancamento,
                 fotoCapa: filme.foto_capa,
-                valor: filme.valor_unitario
+                valor: filme.valor_unitario,
+                classificacao: filme.clasificacao
     
             }
 

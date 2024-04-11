@@ -36,6 +36,7 @@ const insertFilme = async function(dadosFilme){
                 data_relancamento, 
                 foto_capa, 
                 valor_unitario
+                classificacao
                 ) values ( 
                 '${dadosFilme.nome}',
                 '${dadosFilme.sinopse}',
@@ -44,6 +45,7 @@ const insertFilme = async function(dadosFilme){
                 '${dadosFilme.data_relancamento}', 
                 '${dadosFilme.foto_capa}', 
                 '${dadosFilme.valor_unitario}'
+                
                 )`;
     
                 
@@ -56,6 +58,7 @@ const insertFilme = async function(dadosFilme){
                 data_relancamento, 
                 foto_capa, 
                 valor_unitario
+                classificacao
                 )
                         values ( 
                 '${dadosFilme.nome}',
@@ -64,6 +67,7 @@ const insertFilme = async function(dadosFilme){
                 '${dadosFilme.data_lancamento}', 
                 null, 
                 '${dadosFilme.foto_capa}', 
+                '${dadosFilme.valor_unitario}'
                 '${dadosFilme.valor_unitario}'
                 )`;
             }
@@ -120,6 +124,7 @@ const updateFilme = async function(dadosFilme, id){
                              data_relancamento = '${dadosFilme.data_relancamento}', 
                              foto_capa = '${dadosFilme.foto_capa}', 
                              valor_unitario = '${dadosFilme.valor_unitario}'
+                             tbl_classificacao = '${dadosFilme.classificacao}'
                              where tbl_filme.id = ${id}
                              `;
                              console.log(sql)
@@ -132,6 +137,7 @@ const updateFilme = async function(dadosFilme, id){
                              data_relancamento = null, 
                              foto_capa = '${dadosFilme.foto_capa}', 
                              valor_unitario = '${dadosFilme.valor_unitario}'
+                             tbl_classificacao = '${dadosFilme.classificacao}'
                              where tbl_filme.id = ${id}
                              `;
                      }
