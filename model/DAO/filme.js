@@ -35,7 +35,7 @@ const insertFilme = async function(dadosFilme){
                 data_lancamento, 
                 data_relancamento, 
                 foto_capa, 
-                valor_unitario
+                valor_unitario,
                 classificacao
                 ) values ( 
                 '${dadosFilme.nome}',
@@ -44,7 +44,8 @@ const insertFilme = async function(dadosFilme){
                 '${dadosFilme.data_lancamento}', 
                 '${dadosFilme.data_relancamento}', 
                 '${dadosFilme.foto_capa}', 
-                '${dadosFilme.valor_unitario}'
+                '${dadosFilme.valor_unitario}',
+                '${dadosFilme.classificacao}'
                 
                 )`;
     
@@ -67,15 +68,16 @@ const insertFilme = async function(dadosFilme){
                 '${dadosFilme.data_lancamento}', 
                 null, 
                 '${dadosFilme.foto_capa}', 
-                '${dadosFilme.valor_unitario}'
-                '${dadosFilme.valor_unitario}'
+                '${dadosFilme.valor_unitario}',
+                '${dadosFilme.valor_unitario}',
+                '${dadosFilme.classificacao}'
                 )`;
             }
 
 
         
 // $executeRawUnsafe() -  serve para EXECUTAR scripts sem retorno de dados
-//(insert, update e dele) 
+//(insert, update e delette) 
 // $queryRawUnsafe() -   serve para executar(PESQUISAR) scripts com retorno de dados (select) 
 
 let result = await prisma.$executeRawUnsafe(sql);
@@ -123,7 +125,7 @@ const updateFilme = async function(dadosFilme, id){
                              data_lancamento = '${dadosFilme.data_lancamento}', 
                              data_relancamento = '${dadosFilme.data_relancamento}', 
                              foto_capa = '${dadosFilme.foto_capa}', 
-                             valor_unitario = '${dadosFilme.valor_unitario}'
+                             valor_unitario = '${dadosFilme.valor_unitario},'
                              tbl_classificacao = '${dadosFilme.classificacao}'
                              where tbl_filme.id = ${id}
                              `;
@@ -155,12 +157,7 @@ const updateFilme = async function(dadosFilme, id){
                 return false;
                  }
              
-                }
-
-
-
-
-
+}
 // Funçao para excluir um filme no Banco de Dados
 async function deleteFilme(id) {
 
