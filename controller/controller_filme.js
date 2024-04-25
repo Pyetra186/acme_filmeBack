@@ -151,12 +151,13 @@ const setAtualizarFilme = async function (dadosFilme, contentType, id) {
                         //Validação para verificar se a variavel booleana é verdadeira 
                         if (validateStatus) {
 
-
+                        
                             //Encaminha os dados do Filme parao DAO inserir no BD 
                             let filmeAtualizado = await filmesDAO.updateFilme(dadosFilme,id)
 
                             //Validação para verificar se o DAO inseriu os dados no BD
                             if (filmeAtualizado) {
+                                
 
                                 //Cria o JSON de retorno dos dados (201)
                                 updateFilmeJson.filme = dadosFilme

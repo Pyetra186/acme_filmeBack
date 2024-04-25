@@ -49,9 +49,11 @@
 
 //import dos arquivos da controller do projeto
 const controllerFilmes = require('./controller/controller_filme.js')
-const controllerDiretor = require('./controller/controleer_diretor.js')
+const controllerDiretor = require('./controller/controller_diretor.js')
 const controllerClassificacao = require('./controller/controller_classificacao.js')
 const controllerGenero = require('./controller/controller_genero.js')
+const controlleSexo = require('./controller/controller_sexo.js')
+const controlleAtor = require('./controller/controller_ator.js')
 
 //criando um objeto para controlar a chegada dos dados da requisição em formato JSON 
 const bodyParserJSON = bodyParser.json();
@@ -149,7 +151,7 @@ app.put('/v2/acmefilmes/filme/:id', cors(), bodyParserJSON, async function(reque
     response.json(resultadoNovosDadosFilme)
 })
 
-/**************************************************************************************************** */
+/********************************************CLASSIFICACAO******************************************************* */
 
 app.post('/v2/acmefilmes/classificacao', cors(), bodyParserJSON,async function(request, response){
     let contentType = request.headers['content-type'];
@@ -205,7 +207,7 @@ app.get('/v2/acmefilmes/classificacoes', cors(), async function(request, respons
     }
 })
 
-/*************************************************************************************************** */
+/******************************************GENERO********************************************************* */
 
 app.post('/v2/acmefilmes/genero', cors(), bodyParserJSON,async function(request, response){
     let contentType = request.headers['content-type'];
@@ -261,10 +263,145 @@ app.get ('/v2/acmefilmes/genero/:id', cors(), async function(request, response){
 
 })
 
+/******************************************SEXO******************************************************** */
+
+app.get('/v2/acmefilmes/sexo', cors(), async function(request, response){
+
+    let dadosSexo = await controlleSexo.getListarSexo();
+
+    if(dadosSexo){
+        response.json(dadosSexo);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro encontrado'});
+        response.status(404)
+    }
+    
+})
+
+app.get ('/v2/acmefilmes/sexo/:id', cors(), async function(request, response){
+    let idsexo = request.params.id;
+    let dadosSexo = await controlleSexo.getBuscarSexo(idsexo);
+
+    response.status(dadosSexo.status_code);
+    response.json(dadosSexo);
+})
 
 
+/******************************************ATOR******************************************************** */
+
+app.post('/v2/acmefilmes/ator', cors(), bodyParserJSON,async function(request, response){
+    let contentType = request.headers['content-type'];
+
+    let dadosBody = request.body;
+
+    let resultNovosDadosAtor = await controlleAtor.setInserirNovoAtor(dadosBody, contentType);
+    response.status(resultNovosDadosAtor.status_code)
+    response.json(resultNovosDadosAtor)
+
+})
+
+app.delete('/v2/acmefilmes/ator/:id', cors(), async function (request, response, next){
+    let idAtor = request.params.id;
+
+    let dadosAtor = await controlleAtor.setExcluirAtor(idAtor);
+
+    response.json(dadosAtor);
+})
+
+app.put('/v2/acmefilmes/ator/:id', cors(), bodyParserJSON, async function(request, response){
+    let contentType = request.headers['content-type']
+    let idAtor = request.params.id
+
+    let dadosBody = request.body
+    let resultadoNovosDadosAtor = await controlleAtor.setAtualizarAtor(dadosBody, contentType, idAtor)
+
+    response.status(resultadoNovosDadosAtor.status_code)
+    response.json(resultadoNovosDadosAtor)
+   
+})
 
 
+app.get('/v2/acmefilmes/ator', cors(), async function(request, response){
+    
+    let dadosAtor = await controlleAtor.getListarAtor();
+    
+    if(dadosAtor){
+        response.json(dadosAtor);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro encontrado'});
+        response.status(404);
+    }
+})
+
+app.get ('/v2/acmefilmes/ator/:id', cors(), async function(request, response){
+
+    let idAtor = request.params.id;
+    let dadosAtor = await controlleAtor.getBuscarAtor(idAtor);
+
+    response.status(dadosAtor.status_code);
+    response.json(dadosAtor);
+
+})
+
+/*******************************************DIRETOR************************************ */
+
+app.post('/v2/acmefilmes/diretor', cors(), bodyParserJSON,async function(request, response){
+    let contentType = request.headers['content-type'];
+
+    let dadosBody = request.body;
+
+    let resultNovosDadosDiretor = await controllerDiretor.setInserirNovoDiretor(dadosBody, contentType);
+    response.status(resultNovosDadosDiretor.status_code)
+    response.json(resultNovosDadosDiretor)
+
+})
+
+app.delete('/v2/acmefilmes/diretor/:id', cors(), async function (request, response, next){
+    let idDiretor = request.params.id;
+
+    let dadosDiretor = await controllerDiretor.setExcluirDiretor(idDiretor);
+
+    response.json(dadosDiretor);
+})
+
+app.put('/v2/acmefilmes/diretor/:id', cors(), bodyParserJSON, async function(request, response){
+    let contentType = request.headers['content-type']
+    let idDiretor = request.params.id
+
+    let dadosBody = request.body
+    let resultadoNovosDadosDiretor = await controllerDiretor.setAtualizarDiretor(dadosBody, contentType, idDiretor)
+
+    response.status(resultadoNovosDadosDiretor.status_code)
+    response.json(resultadoNovosDadosDiretor)
+   
+})
+
+
+app.get('/v2/acmefilmes/diretor', cors(), async function(request, response){
+    
+    let dadosDiretor = await controllerDiretor.getListarDiretor();
+    
+    if(dadosDiretor){
+        response.json(dadosDiretor);
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro encontrado'});
+        response.status(404);
+    }
+})
+
+app.get ('/v2/acmefilmes/diretor/:id', cors(), async function(request, response){
+
+    let idDiretor = request.params.id;
+    let dadosDiretor = await controllerDiretor.getBuscarDiretor(idDiretor);
+
+    response.status(dadosDiretor.status_code);
+    response.json(dadosDiretor);
+
+})
+/****************************************************************************************** */
 //Executa a API e faz ela ficar aguardando requisições
 app.listen(8030, function(){
     console.log('API funcionando e aguardando requisições');

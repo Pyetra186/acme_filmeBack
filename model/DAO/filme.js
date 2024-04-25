@@ -69,7 +69,6 @@ const insertFilme = async function(dadosFilme){
                 null, 
                 '${dadosFilme.foto_capa}', 
                 '${dadosFilme.valor_unitario}',
-                '${dadosFilme.valor_unitario}',
                 '${dadosFilme.classificacao}'
                 )`;
             }
