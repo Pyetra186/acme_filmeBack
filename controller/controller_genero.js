@@ -156,10 +156,15 @@ const getListarGenero = async function(){
     }
 }
 
+
+
+
 module.exports = {
     setInserirNovoGenero,
     setexcluirGenero,
     setAtualizarGenero,
     getBuscarGenero,
     getListarGenero
+  
+
 }

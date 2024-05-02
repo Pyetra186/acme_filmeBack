@@ -99,6 +99,7 @@ const selectByIdGenero = async function(id){
     }
 }
 
+
 module.exports = {
     insertGenero,
     insertById,
@@ -106,5 +107,6 @@ module.exports = {
     deleteGenero,
     selectAllGenero,
     selectByIdGenero
+    
 }
 

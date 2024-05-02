@@ -9,6 +9,8 @@ const message = require('../modulo/config.js');
 
 const diretorDAO = require('../model/DAO/diretor.js');
 
+const nacionalidadeDAO = require('../model/DAO/nacionalidade.js')
+
 const setInserirNovoDiretor = async function(dadosDiretor, contentType){
     try{
         if(String(contentType).toLowerCase() == 'application/json'){
@@ -198,6 +200,12 @@ const getListarDiretor = async function(){
 
     //validação para verificar se o DAO retornou os dados
     if(dadosDiretor){
+        for (let diretor of dadosDiretor){
+            let nacionalidadeDiretor = await nacionalidadeDAO.selectDiretorNacionalidadeById(diretor.id)
+            if(nacionalidadeDiretor.length > 0){
+                diretor.nacionalidade = nacionalidadeDiretor
+            }
+        }
         //cria o JSON para retornar para o app
         diretorJSON.diretor = dadosDiretor;
         diretorJSON.quantidade = dadosDiretor.length;
@@ -234,11 +242,35 @@ const getBuscarDiretor = async function(id){
     }
 }
 
+const getBuscarNomeDiretor = async function(nome) {
+    let nomeDiretor = nome;
+    let diretorJSON = {};
+
+    if(nomeDiretor == '' || nomeDiretor == undefined || isNaN(nomeDiretor)){
+        return message.ERROR_INVALID_ID;//400
+    }else{
+        let dadosDiretor = await diretorDAO.selectNomeDiretor(nome);
+ 
+
+    if(dadosDiretor){
+        diretorJSON.diretor = dadosDiretor;
+        diretorJSON.quantidade = dadosDiretor.length;
+        diretorJSON.status_code = 200;
+
+        return diretorJSON
+    }else{
+        return false;
+    }
+    
+}
+}
+
 
 module.exports = {
     setInserirNovoDiretor,
     setAtualizarDiretor,
     setExcluirDiretor,
     getListarDiretor,
-    getBuscarDiretor
+    getBuscarDiretor,
+    getBuscarNomeDiretor
 }

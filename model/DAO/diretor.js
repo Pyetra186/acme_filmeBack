@@ -165,11 +165,22 @@ const selectByIdDiretor = async function(id){
 
 }
 
+const selectNomeDiretor = async function (nome){
+      try {
+    
+        let sql = `select * from tbl_ator where nome LIKE "%${nome}%"`
+        let rsAtor = await prisma.$queryRawUnsafe(sql);
+    
+            return rsAtor;
+        } catch (error) {
+            return false
+        }
+        
+}
 module.exports = {
-    insertDiretor,
-    InsertById,
     updateDiretor,
     deleteDiretor,
     selectAllDiretor,
-    selectByIdDiretor
+    selectByIdDiretor,
+    selectNomeDiretor
 }

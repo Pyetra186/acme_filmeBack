@@ -92,6 +92,7 @@ const setInserirNovoFilme = async function(dadosFilme, contentType){
 
 // Função para atualizar um filme
 const setAtualizarFilme = async function (dadosFilme, contentType, id) {
+
     let idFilme = id
 
     if (idFilme == '' || idFilme == undefined || isNaN(idFilme)) {
@@ -117,7 +118,8 @@ const setAtualizarFilme = async function (dadosFilme, contentType, id) {
                         dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento == null || dadosFilme.data_lancamento.length != 10 ||
                         dadosFilme.foto_capa == ''       || dadosFilme.foto_capa == undefined       || dadosFilme.foto_capa == null       || dadosFilme.foto_capa.length > 200       ||
                         dadosFilme.classificacao == ''   || dadosFilme.classificacao == undefined   || dadosFilme.classificacao == null   ||
-                        dadosFilme.valor_unitario.length > 6
+                        dadosFilme.valor_unitario.length > 6 ||
+                        dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null   
 
                     ) {
 
@@ -266,9 +268,8 @@ const getBuscarNomeFilme = async function(nome){
     if(nomeFilme == '' || nomeFilme == undefined || isNaN(nomeFilme)){
         return message.ERROR_INVALID_ID;//400
     }else{
-        let dadosFilmes = await filmesDAO.selectByNomeFilme();
+        let dadosFilmes = await filmesDAO.selectByNomeFilme(nome);
  
-    }
 
     if(dadosFilmes){
         filmesJSON.filmes = dadosFilmes;
@@ -280,6 +281,8 @@ const getBuscarNomeFilme = async function(nome){
         return false;
     }
     
+}
+
 }
 
 

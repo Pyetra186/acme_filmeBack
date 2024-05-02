@@ -36,7 +36,7 @@ const insertFilme = async function(dadosFilme){
                 data_relancamento, 
                 foto_capa, 
                 valor_unitario,
-                classificacao
+                tbl_classificacao_id
                 ) values ( 
                 '${dadosFilme.nome}',
                 '${dadosFilme.sinopse}',
@@ -45,7 +45,7 @@ const insertFilme = async function(dadosFilme){
                 '${dadosFilme.data_relancamento}', 
                 '${dadosFilme.foto_capa}', 
                 '${dadosFilme.valor_unitario}',
-                '${dadosFilme.classificacao}'
+                ${dadosFilme.tbl_classificacao_id}
                 
                 )`;
     
@@ -59,7 +59,7 @@ const insertFilme = async function(dadosFilme){
                 data_relancamento, 
                 foto_capa, 
                 valor_unitario
-                classificacao
+                tbl_classificacao_id
                 )
                         values ( 
                 '${dadosFilme.nome}',
@@ -69,7 +69,7 @@ const insertFilme = async function(dadosFilme){
                 null, 
                 '${dadosFilme.foto_capa}', 
                 '${dadosFilme.valor_unitario}',
-                '${dadosFilme.classificacao}'
+                ${dadosFilme.tbl_classificacao_id}
                 )`;
             }
 
@@ -125,7 +125,7 @@ const updateFilme = async function(dadosFilme, id){
                              data_relancamento = '${dadosFilme.data_relancamento}', 
                              foto_capa = '${dadosFilme.foto_capa}', 
                              valor_unitario = '${dadosFilme.valor_unitario},'
-                             tbl_classificacao = '${dadosFilme.classificacao}'
+                             tbl_classificacao_id = '${dadosFilme.tbl_classificacao_id}'
                              where tbl_filme.id = ${id}
                              `;
                              console.log(sql)
@@ -138,7 +138,7 @@ const updateFilme = async function(dadosFilme, id){
                              data_relancamento = null, 
                              foto_capa = '${dadosFilme.foto_capa}', 
                              valor_unitario = '${dadosFilme.valor_unitario}'
-                             tbl_classificacao = '${dadosFilme.classificacao}'
+                             tbl_classificacao_id = '${dadosFilme.tbl_classificacao_id}'
                              where tbl_filme.id = ${id}
                              `;
                      }
@@ -212,14 +212,16 @@ const selectByIdFilme = async function(id){
 
 const selectByNomeFilme = async function(nome){
 
-    let sql = 'select nome from tbl_filme';
+    try {
 
-    let rsFilmes = await prisma.$queryRawUnsafe(sql);
-
-    if(rsFilmes.length > 0)
-      return rsFilmes;
-    else
-      return false;
+        let sql = `select * from tbl_filme where nome LIKE "%${nome}%"`
+        let rsFilmes = await prisma.$queryRawUnsafe(sql);
+    
+            return rsFilmes;
+        } catch (error) {
+            return false
+        }
+        
 }
 
 module.exports = {

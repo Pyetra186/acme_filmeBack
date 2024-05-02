@@ -89,19 +89,15 @@ app.get('/v2/acmeFilmes/filmes', cors(), async function(request, response){
     }
 });
 
-app.get('/v2/acmeFilmes/filmes/filtro', cors(), async function(request,response){
-
+app.get('v2/acmefilmes/filmeNome', cors(), async function(request,response,next){
     
-    let dadosFilmes = await controllerFilmes.getBuscarNomeFilme();
+    let nomeFilme = request.query.nome
+    let filmeNome = await controllerFilmes.getBuscarNomeFilme(nomeFilme)
 
-    if(dadosFilmes){
-        response.json(dadosFilmes);
-        response.status(200);
-    }else{
-        response.json({message: 'Nenhum registro encontrado'});
-        response.status(404);
-    }
-});
+        response.json(filmeNome);
+        response.status(filmeNome.status_code)
+ 
+})
 
 //End Point: Retorna daados filtrando pelo ID
 app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response){
@@ -263,6 +259,8 @@ app.get ('/v2/acmefilmes/genero/:id', cors(), async function(request, response){
 
 })
 
+
+
 /******************************************SEXO******************************************************** */
 
 app.get('/v2/acmefilmes/sexo', cors(), async function(request, response){
@@ -345,6 +343,17 @@ app.get ('/v2/acmefilmes/ator/:id', cors(), async function(request, response){
 
 })
 
+app.get('/v2/acmefilmes/ator/nomeAtor', cors(), async function(response,){
+
+    let nomeAtor = request.query.nome
+    let atorNome = await controlleAtor.getBuscarNomeAtor(nomeAtor)
+
+    response.status(atorNome.status_code);
+        response.json(atorNome);
+       
+
+})
+
 /*******************************************DIRETOR************************************ */
 
 app.post('/v2/acmefilmes/diretor', cors(), bodyParserJSON,async function(request, response){
@@ -401,7 +410,18 @@ app.get ('/v2/acmefilmes/diretor/:id', cors(), async function(request, response)
     response.json(dadosDiretor);
 
 })
-/****************************************************************************************** */
+
+app.get ('/v2/acmefilmes/diretor/diretorNome', cors(), async function(request,response){
+
+    let nomeDiretor = request.query.nome
+    let diretorNome = await controllerDiretor.getBuscarNomeDiretor(nomeDiretor)
+
+        response.json(diretorNome);
+        response.status(diretorNome.status_code)
+
+})
+/************************************************************************************************************************ */
+
 //Executa a API e faz ela ficar aguardando requisições
 app.listen(8030, function(){
     console.log('API funcionando e aguardando requisições');

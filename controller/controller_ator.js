@@ -9,6 +9,8 @@ const message = require('../modulo/config.js');
 
 const atorDAO = require('../model/DAO/ator.js');
 
+const nacionalidadeDAO = require('../model/DAO/nacionalidade.js');
+
 const setInserirNovoAtor = async function(dadosAtor, contentType){
     try{
         if(String(contentType).toLowerCase() == 'application/json'){
@@ -93,7 +95,8 @@ const setAtualizarAtor = async function (dadosAtor, contentType, id) {
                         dadosAtor.data_nascimento == ''         || dadosAtor.data_nascimento == undefined  ||   dadosAtor.data_nascimento == null      || dadosAtor.data_nascimento.length !=   10       ||
                         dadosAtor.biografia == ''               || dadosAtor.biografia   == undefined      || dadosAtor.biografia  == null             || dadosAtor.biografia  > 65000                   ||
                         dadosAtor.foto_ator == ''               || dadosAtor.foto_ator   == undefined      || dadosAtor.foto_ator  == null             || dadosAtor.foto_ator > 1000                     ||
-                        dadosAtor.sexo_id == ''                 || dadosAtor.sexo_id    == undefined       || dadosAtor.sexo_id == null                || dadosAtor.sexo_id > 3                          
+                        dadosAtor.sexo_id == ''                 || dadosAtor.sexo_id    == undefined       || dadosAtor.sexo_id == null                || dadosAtor.sexo_id > 3                           
+
      
                         
 
@@ -198,6 +201,13 @@ const getListarAtor = async function(){
     
         //validação para verificar se o DAO retornou os dados
         if(dadosAtor){
+        
+            for (let ator of dadosAtor){
+                let nacionalidadeAtor = await nacionalidadeDAO.selectNacionalidadeAtorByid(ator.id)
+                if(nacionalidadeAtor.length > 0){
+                    ator.nacionalidade = nacionalidadeAtor
+                }
+            }
             //cria o JSON para retornar para o app
             atorJSON.ator = dadosAtor;
             atorJSON.quantidade = dadosAtor.length;
@@ -235,11 +245,37 @@ const getBuscarAtor = async function(id){
         }
 }
 
+
+const getBuscarNomeAtor = async function(nome){
+    try {
+        let nomeAtor = nome 
+        let atorJSON = {}
+        if (nomeAtor == '' ||nomeAtor==undefined||!isNaN(nomeAtor))
+        return message.ERROR_INVALID_ID//400
+        else {
+            let dadosAtor = await atorDAO.selectByNomeAtor (nomeAtor)
+            if (dadosAtor){
+                if (dadosAtor.length>0){
+                    atorJSON.ator = dadosAtor
+                    atorJSON.status_code = 200 
+                    return atorJSON
+                } else 
+                return message.ERROR_NOT_FOUD
+            }
+            else 
+            return message.ERROR_INTERNAL_SERVER_DB
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
 module.exports = {
     setInserirNovoAtor,
     setAtualizarAtor,
     setExcluirAtor,
     getBuscarAtor,
-    getListarAtor
+    getListarAtor,
+    getBuscarNomeAtor
 }
     
