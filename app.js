@@ -423,6 +423,6 @@ app.get ('/v2/acmefilmes/diretor/diretorNome', cors(), async function(request,re
 /************************************************************************************************************************ */
 
 //Executa a API e faz ela ficar aguardando requisições
-app.listen(8030, function(){
+app.listen(8080, function(){
     console.log('API funcionando e aguardando requisições');
 })

@@ -8,8 +8,8 @@
 const message = require('../modulo/config.js');
 
 const atorDAO = require('../model/DAO/ator.js');
-
 const nacionalidadeDAO = require('../model/DAO/nacionalidade.js');
+const sexoDAO = require('../model/DAO/sexo.js')
 
 const setInserirNovoAtor = async function(dadosAtor, contentType){
     try{
@@ -44,16 +44,22 @@ const setInserirNovoAtor = async function(dadosAtor, contentType){
 
                 if(validateStatus = true){
                     let novoAtor = await atorDAO.insertAtor(dadosAtor);
+                   
+                   
+                
 
 
                     if(novoAtor){
                         let ultimoId = await atorDAO.insertById()
                         dadosAtor.id = Number(ultimoId[0].id)
 
+                        // let ultimoId = await atorDAO.insertNacionalidadeAtor(ultimoId, dadosAtor.nacionalidade)
+
                         novoAtorJSON.ator            = dadosAtor;
                         novoAtorJSON.status          = message.SUCCESS_CREATED_ITEM.status;
                         novoAtorJSON.status_code     = message.SUCCESS_CREATED_ITEM.status_code;
                         novoAtorJSON.message         = message.SUCCESS_CREATED_ITEM.message;
+                        
 
                         
                         return novoAtorJSON;//201
@@ -69,6 +75,8 @@ const setInserirNovoAtor = async function(dadosAtor, contentType){
         return message.ERROR_INTERNAL_SERVER; // 500 - erro na controller
     }
 }
+
+
 
 const setAtualizarAtor = async function (dadosAtor, contentType, id) {
     let idAtor = id
@@ -198,16 +206,44 @@ const getListarAtor = async function(){
     
         //chama a função do DAO que retorna os filmes do banco de dados
         let dadosAtor = await atorDAO.selectAllAtor();
-    
-        //validação para verificar se o DAO retornou os dados
-        if(dadosAtor){
+
+
+        if(dadosAtor.length > 0){
+
+            for (let ator of dadosAtor){
+
+                let sexoAtor = await sexoDAO.selectByIdSexo(ator.sexo_id)
+                delete ator.sexo_id
+                ator.sexo = sexoAtor
+            }
+
+            for (let ator of dadosAtor){
+                
+                let nacionalidadeAtor = await nacionalidadeDAO.selectNacionalidadeAtorByid(ator.id)
+                
+                    ator.nacionalidade = nacionalidadeAtor
+            
+      
+
+      }
+      /*  if(dadosAtor.length>0){
+        for (let ator of dadosAtor){
+            let sexo = await sexoDAO.selectByIdSexo(ator.sexo_id)
+            if(sexo.length > 0){
+                ator.sexo = sexo
+            }
+
+        if(dadosAtor.length>0){
         
             for (let ator of dadosAtor){
-                let nacionalidadeAtor = await nacionalidadeDAO.selectNacionalidadeAtorByid(ator.id)
-                if(nacionalidadeAtor.length > 0){
-                    ator.nacionalidade = nacionalidadeAtor
+                let nacionalidade = await nacionalidadeDAO.selectNacionalidadeAtorByid(ator.id)
+                if(nacionalidade.length > 0){
+                    ator.nacionalidade = nacionalidade
                 }
             }
+        }
+    }
+    */
             //cria o JSON para retornar para o app
             atorJSON.ator = dadosAtor;
             atorJSON.quantidade = dadosAtor.length;
@@ -217,7 +253,8 @@ const getListarAtor = async function(){
         }else{
             return false;
         }
-}
+    }
+   
 
 const getBuscarAtor = async function(id){
 
@@ -228,6 +265,26 @@ const getBuscarAtor = async function(id){
             return message.ERROR_INVALID_ID;//400
         }else{
             let dadosAtor= await atorDAO.selectByIdAtor(idAtor);
+
+            if(dadosAtor.length > 0){
+
+                for (let ator of dadosAtor){
+    
+                    let sexoAtor = await sexoDAO.selectByIdSexo(ator.sexo_id)
+                    delete ator.sexo_id
+                    ator.sexo = sexoAtor
+                }
+    
+                for (let ator of dadosAtor){
+                    
+                    let nacionalidadeAtor = await nacionalidadeDAO.selectNacionalidadeAtorByid(ator.id)
+                    
+                        ator.nacionalidade = nacionalidadeAtor
+                
+          
+    
+          }
+          
     
     
             if(dadosAtor){
@@ -243,7 +300,8 @@ const getBuscarAtor = async function(id){
                 return message.ERROR_INTERNAL_SERVER_DB;//500
             }
         }
-}
+    }
+}  
 
 
 const getBuscarNomeAtor = async function(nome){

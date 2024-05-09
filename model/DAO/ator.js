@@ -20,6 +20,7 @@ const insertAtor = async function(dadosAtor){
         dadosAtor.data_falecimento != null &&
         dadosAtor.data_falecimento != undefined
         ){
+            //foreach()
             sql = `insert into tbl_ator(
                 nome,
                 nome_artistico,

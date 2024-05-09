@@ -8,8 +8,8 @@
 const message = require('../modulo/config.js');
 
 const diretorDAO = require('../model/DAO/diretor.js');
-
 const nacionalidadeDAO = require('../model/DAO/nacionalidade.js')
+const sexoDAO = require('../model/DAO/sexo.js')
 
 const setInserirNovoDiretor = async function(dadosDiretor, contentType){
     try{
@@ -198,13 +198,20 @@ const getListarDiretor = async function(){
     //chama a função do DAO que retorna os filmes do banco de dados
     let dadosDiretor = await diretorDAO.selectAllDiretor();
 
-    //validação para verificar se o DAO retornou os dados
-    if(dadosDiretor){
+    if(dadosDiretor.length > 0){
+
         for (let diretor of dadosDiretor){
+
+            let sexoDiretor = await sexoDAO.selectByIdSexo(diretor.sexo_id)
+            delete diretor.sexo_id
+            diretor.sexo = sexoDiretor
+        }
+
+        for (let diretor of dadosDiretor){
+            
             let nacionalidadeDiretor = await nacionalidadeDAO.selectDiretorNacionalidadeById(diretor.id)
-            if(nacionalidadeDiretor.length > 0){
+            
                 diretor.nacionalidade = nacionalidadeDiretor
-            }
         }
         //cria o JSON para retornar para o app
         diretorJSON.diretor = dadosDiretor;
@@ -215,7 +222,10 @@ const getListarDiretor = async function(){
     }else{
         return false;
     }
-}
+  }
+ 
+
+
 
 const getBuscarDiretor = async function(id){
     let idDiretor = id;

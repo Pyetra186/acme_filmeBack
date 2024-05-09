@@ -165,7 +165,7 @@ const selectByIdDiretor = async function(id){
 
 }
 
-const selectNomeDiretor = async function (nome){
+/*const selectNomeDiretor = async function (nome){
       try {
     
         let sql = `select * from tbl_ator where nome LIKE "%${nome}%"`
@@ -176,11 +176,13 @@ const selectNomeDiretor = async function (nome){
             return false
         }
         
-}
+}*/
 module.exports = {
     updateDiretor,
     deleteDiretor,
     selectAllDiretor,
     selectByIdDiretor,
-    selectNomeDiretor
+    insertDiretor,
+    InsertById
+    //selectNomeDiretor,
 }

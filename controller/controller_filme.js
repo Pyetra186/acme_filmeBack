@@ -10,6 +10,8 @@ const message = require('../modulo/config.js');
 
 //Import do arquivo responsavel pela interação com banco de dados (model)
 const filmesDAO = require('../model/DAO/filme.js');
+const generoDAO = require('../model/DAO/genero.js');
+const classificacaoDAO = require('../model/DAO/classificacao.js')
 
 //Função para inserir novo filme
 const setInserirNovoFilme = async function(dadosFilme, contentType){
@@ -26,8 +28,8 @@ const setInserirNovoFilme = async function(dadosFilme, contentType){
             dadosFilme.duracao == ''                   || dadosFilme.duracao == undefined           || dadosFilme.duracao == null         || dadosFilme.duracao.length > 8             ||
             dadosFilme.data_lancamento == ''           || dadosFilme.data_lancamento == undefined   || dadosFilme.data_lancamento == null || dadosFilme.data_lancamento.length != 10   ||
             dadosFilme.foto_capa == ''                 || dadosFilme.foto_capa == undefined         || dadosFilme.foto_capa == null       || dadosFilme.foto_capa.length > 1000        ||
-            dadosFilme.classificacao == ''             || dadosFilme.classificacao == undefined     || dadosFilme.classificacao == null   ||  
-            dadosFilme.valor_unitario.length > 6         
+            dadosFilme.valor_unitario.length > 6       ||
+            dadosFilme.classificacao_id == '' || dadosFilme.classificacao_id == undefined || dadosFilme.classificacao_id == null      
         ){
     
             return message.ERROR_REQUIRED_FIELDS;//400
@@ -117,9 +119,8 @@ const setAtualizarFilme = async function (dadosFilme, contentType, id) {
                         dadosFilme.duracao == ''         || dadosFilme.duracao == undefined         || dadosFilme.duracao == null         || dadosFilme.duracao.length > 8           ||
                         dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento == null || dadosFilme.data_lancamento.length != 10 ||
                         dadosFilme.foto_capa == ''       || dadosFilme.foto_capa == undefined       || dadosFilme.foto_capa == null       || dadosFilme.foto_capa.length > 200       ||
-                        dadosFilme.classificacao == ''   || dadosFilme.classificacao == undefined   || dadosFilme.classificacao == null   ||
                         dadosFilme.valor_unitario.length > 6 ||
-                        dadosFilme.tbl_classificacao_id == '' || dadosFilme.tbl_classificacao_id == undefined || dadosFilme.tbl_classificacao_id == null   
+                        dadosFilme.classificacao_id == '' || dadosFilme.classificacao_id == undefined || dadosFilme.classificacao_id == null   
 
                     ) {
 
@@ -156,6 +157,9 @@ const setAtualizarFilme = async function (dadosFilme, contentType, id) {
                         
                             //Encaminha os dados do Filme parao DAO inserir no BD 
                             let filmeAtualizado = await filmesDAO.updateFilme(dadosFilme,id)
+
+                            
+                            
 
                             //Validação para verificar se o DAO inseriu os dados no BD
                             if (filmeAtualizado) {
@@ -220,6 +224,38 @@ const getListarFilmes = async function(){
     //chama a função do DAO que retorna os filmes do banco de dados
     let dadosFilmes = await filmesDAO.selectAllFilmes();
 
+    if(dadosFilmes.length > 0){
+
+        for (let filme of dadosFilmes){
+
+            let classificacaoFilme = await classificacaoDAO.selectByIdClassificacao(filme.classificacao_id)
+            delete filme.classificacao_id
+            filme.classificacao = classificacaoFilme
+        }
+
+        for (let filme of dadosFilmes){
+            
+            let generoFilme = await generoDAO.selectByIdGenero(filme.id)
+            
+                filme.genero = generoFilme
+        
+  
+
+  }
+
+   /* if(dadosFilmes.length>0){
+    for (let filme of dadosFilmes){
+        let classificacao = await classificacaoDAO.selectByIdClassificacao(filme.classificacao_id)
+        if(classificacao.length > 0){
+            filme.classificacao = classificacao
+        }   
+    for (let filme of dadosFilmes){
+        let genero = await generoDAO.selectByIdGenero(filme.id)
+        if(genero.length > 0){
+            filme.genero = genero
+        }
+    }*/
+
     //validação para verificar se o DAO retornou os dados
     if(dadosFilmes){
         //cria o JSON para retornar para o app
@@ -231,7 +267,10 @@ const getListarFilmes = async function(){
     }else{
         return false;
     }
+  }
 }
+
+
 
 //Função para buscar filme
 const getBuscarFilme = async function(id){
@@ -244,7 +283,38 @@ const getBuscarFilme = async function(id){
     }else{
         let dadosFilme = await filmesDAO.selectByIdFilme(idFilme);
 
+        if(dadosFilme.length > 0){
 
+            for (let filme of dadosFilme){
+
+                let classificacaoFilme = await classificacaoDAO.selectByIdClassificacao(filme.classificacao_id)
+                delete filme.classificacao_id
+                filme.classificacao = classificacaoFilme
+            }
+
+            for (let filme of dadosFilme){
+                
+                let generoFilme = await generoDAO.selectByIdGenero(filme.id)
+                
+                    filme.genero = generoFilme
+      }
+
+
+      /*  if(dadosFilme.length>0){
+        for (let filme of dadosFilme){
+            let classificacao = await classificacaoDAO.selectByIdClassificacao(filme.classificacao_id)
+            if(classificacao.length > 0){
+                filme.classificacao = classificacao
+            }
+        for (let filme of dadosFilme){
+            let genero = await generoDAO.selectByIdGenero(filme.id)
+            if(genero.length > 0){
+                filme.genero = genero
+            }
+    
+        }
+    }
+*/
         if(dadosFilme){
             if(dadosFilme.length > 0){
                 filmeJSON.filme = dadosFilme;
@@ -258,6 +328,7 @@ const getBuscarFilme = async function(id){
             return message.ERROR_INTERNAL_SERVER_DB;//500
         }
     }
+ }
 }
 
 const getBuscarNomeFilme = async function(nome){
